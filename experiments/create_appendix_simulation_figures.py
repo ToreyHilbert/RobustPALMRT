@@ -69,23 +69,36 @@ del file_dfs
 # Create the colors and names of the methods
 ################################################
 
+rename_dict = {
+    "OLS__L1" : "OLS-L1",
+    "OLS__L2" : "OLS-L2",
+    "OLS__Huber": "OLS-Huber",
+    "Huber__L1": "Huber-L1",
+    "Huber__L2": "Huber-L2",
+    "Huber__Huber" : "Huber-Huber",
+    "t-test" : "F-test"
+}
+
+factorial_df = factorial_df.rename(columns = rename_dict)
+sample_size_df = sample_size_df.rename(columns = rename_dict)
+
 plot_methods = [
-    "OLS__L1",
-    "OLS__L2",
-    "OLS__Huber",
-    "Huber__L1",
-    "Huber__L2",
-    "Huber__Huber"
+    "OLS-L1",
+    "OLS-L2",
+    "OLS-Huber",
+    "Huber-L1",
+    "Huber-L2",
+    "Huber-Huber"
 ]
 
 colors_dict = {
-    "OLS__L1" : "blue",
-    "OLS__L2" : "lime",
-    "OLS__Huber" : "forestgreen",
-    "Huber__L1" : "darkviolet",
-    "Huber__L2" : "orange",
-    "Huber__Huber" : "magenta",
-    "t-test" : "black"
+    "OLS-L1" : "blue",
+    "OLS-L2" : "lime",
+    "OLS-Huber" : "forestgreen",
+    "Huber-L1" : "darkviolet",
+    "Huber-L2" : "orange",
+    "Huber-Huber" : "magenta",
+    "F-test" : "black"
 }
 
 trials = 1000
@@ -100,7 +113,11 @@ designs = [("Normal", "Normal"),
            ("Normal", "Cauchy"),
            ("Normal", "LogNormal"),
            ("Normal", "Multinomial"),
+           ("Cauchy", "Normal"),
            ("Cauchy", "t3"),
+           ("Cauchy", "Cauchy"),
+           ("Cauchy", "LogNormal"),
+           ("Cauchy", "Multinomial"),
            ("t3", "LogNormal"),
            ("BalancedAnova", "LogNormal")
 ]
@@ -142,7 +159,7 @@ def plot_factorial_cell(ax, cov, eps, p):
     eps_mask = factorial_df["eps"] == eps
     p_mask = factorial_df["p"] == p
 
-    df = factorial_df[cov_mask & eps_mask & p_mask][["target", "t-test"] + plot_methods]
+    df = factorial_df[cov_mask & eps_mask & p_mask][["target", "F-test"] + plot_methods]
     power_by_target = df.groupby("target").aggregate(lambda x: np.mean(x <= 0.05)).reset_index()
 
     # Do not plot the Type I error rate
@@ -152,17 +169,17 @@ def plot_factorial_cell(ax, cov, eps, p):
     for index, method in enumerate(plot_methods):
         ax.plot(
             power_by_target["target"] + (index - 2.5)/2,
-            power_by_target[method]/power_by_target["t-test"],
+            power_by_target[method]/power_by_target["F-test"],
             label = method,
             color = colors_dict[method])
         ax.scatter(
             power_by_target["target"] + (index - 2.5)/2,
-            power_by_target[method]/power_by_target["t-test"],
+            power_by_target[method]/power_by_target["F-test"],
             color = colors_dict[method])
 
     plot_errorbars_for_method_power(ax,
         power_by_target["OLS__L2"],
-        power_by_target["t-test"],
+        power_by_target["F-test"],
         power_by_target["target"],
         colors_dict["OLS__L2"],
         offset = (1 - 2.5)/2
@@ -170,7 +187,7 @@ def plot_factorial_cell(ax, cov, eps, p):
 
     plot_errorbars_for_method_power(ax,
         power_by_target["Huber__Huber"],
-        power_by_target["t-test"],
+        power_by_target["F-test"],
         power_by_target["target"],
         colors_dict["Huber__Huber"],
         offset = (5 - 2.5)/2
@@ -223,13 +240,13 @@ for p in ps:
         p_mask = factorial_df["p"] == p
         target_mask = factorial_df["target"] == 0
 
-        df = factorial_df[cov_mask & eps_mask & p_mask & target_mask][["t-test"] + plot_methods]
+        df = factorial_df[cov_mask & eps_mask & p_mask & target_mask][["F-test"] + plot_methods]
 
         trials = df.shape[0]
         indices = np.arange(trials) / trials
         upper_bound = sc.stats.distributions.binom(n = trials, p = indices).ppf(0.95)/trials
 
-        max_alpha = 0.10
+        max_alpha = 0.06
 
         trials_plotting_count = int(trials * max_alpha)
         plot_mask = np.arange(trials_plotting_count)
@@ -303,14 +320,14 @@ def plot_sample_size_cell(ax, cov, eps, target):
     eps_mask = sample_size_df["eps"] == eps
     target_mask = sample_size_df["target"] == target
 
-    df = sample_size_df[cov_mask & eps_mask & target_mask][["n", "t-test"] + plot_methods]
+    df = sample_size_df[cov_mask & eps_mask & target_mask][["n", "F-test"] + plot_methods]
 
     cov_mask = factorial_df["cov"] == cov
     eps_mask = factorial_df["eps"] == eps
     target_mask = factorial_df["target"] == target
     p_mask = factorial_df["p"] == 6
 
-    sample_size_from_factorial = factorial_df[cov_mask & eps_mask & target_mask & p_mask][["t-test"] + plot_methods]
+    sample_size_from_factorial = factorial_df[cov_mask & eps_mask & target_mask & p_mask][["F-test"] + plot_methods]
     sample_size_from_factorial["n"] = 100
 
     df = pd.concat([
@@ -325,17 +342,17 @@ def plot_sample_size_cell(ax, cov, eps, target):
     for index, method in enumerate(plot_methods):
         ax.plot(
             power_by_target["n"] * (1 + (index - 2.5)/50),
-            power_by_target[method]/power_by_target["t-test"],
+            power_by_target[method]/power_by_target["F-test"],
             label = method,
             color = colors_dict[method])
         ax.scatter(
             power_by_target["n"] * (1 + (index - 2.5)/50),
-            power_by_target[method]/power_by_target["t-test"],
+            power_by_target[method]/power_by_target["F-test"],
             color = colors_dict[method])
 
     plot_errorbars_for_method_power_sample_size(ax,
         power_by_target["OLS__L2"],
-        power_by_target["t-test"],
+        power_by_target["F-test"],
         power_by_target["n"],
         colors_dict["OLS__L2"],
         offset = (1 - 2.5)/50
@@ -343,7 +360,7 @@ def plot_sample_size_cell(ax, cov, eps, target):
 
     plot_errorbars_for_method_power_sample_size(ax,
         power_by_target["Huber__Huber"],
-        power_by_target["t-test"],
+        power_by_target["F-test"],
         power_by_target["n"],
         colors_dict["Huber__Huber"],
         offset = (5 - 2.5)/50
@@ -363,7 +380,7 @@ for target in targets[1:]:
 
     fig.supxlabel("Sample size, n")
     fig.supylabel("Power of method / F-test")
-    fig.suptitle(f"Relative power over F-test\n with p = 100, B = 999, target = {target}%, 1000 runs")
+    fig.suptitle(f"Relative power over F-test\n with p = 6, B = 999, target = {target}%, 1000 runs")
     
     for i, (cov, eps) in enumerate(designs):
         row = i // 4
@@ -399,7 +416,7 @@ for n in [25, 50, 200, 400]:
         target_mask = sample_size_df["target"] == 0
         n_mask = sample_size_df["n"] == n
 
-        df = sample_size_df[cov_mask & eps_mask & target_mask & n_mask][["t-test"] + plot_methods]
+        df = sample_size_df[cov_mask & eps_mask & target_mask & n_mask][["F-test"] + plot_methods]
 
         indices = np.arange(trials) / trials
         upper_bound = sc.stats.distributions.binom(n = trials, p = indices).ppf(0.95)/trials
