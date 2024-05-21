@@ -5,6 +5,8 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=40
 #SBATCH --job-name=SampleSize
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=hilbert.54@osu.edu
 #SBATCH --output=logs/python-%x.%j.out
 #SBATCH --error=logs/python-%x.%j.err
 
@@ -15,15 +17,15 @@ cd $SLURM_SUBMIT_DIR
 module load miniconda3/4.11.0-py38 
 
 # If dpt-sim environment is not created:
-conda create -n dpt-sim python=3.9 -y
-source activate dpt-sim
-pip install -r requirements.txt
+# conda create -n dpt-sim python=3.9 -y
+# source activate dpt-sim
+# pip install -r requirements.txt
 
 # If dpt-sim environment has been previously created:
-# source activate dpt-sim
+source activate dpt-sim
 
 
-base_seed=4124000
+base_seed=40124000
 experiment_count=$4
 
 for target_power in 0 20 40 60 80 95
