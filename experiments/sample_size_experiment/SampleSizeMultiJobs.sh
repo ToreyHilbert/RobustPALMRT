@@ -2,6 +2,7 @@
 
 experiment_count=0
 for n in 25 50 200 400
+do
     for cov in Normal t3 Cauchy BalancedAnova
     do
         for eps in Normal t3 Cauchy Multinomial LogNormal
