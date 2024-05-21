@@ -23,7 +23,7 @@ pip install -r requirements.txt
 # source activate dpt-sim
 
 
-base_seed=40124000
+base_seed=4124000
 experiment_count=$4
 
 for target_power in 0 20 40 60 80 95
