@@ -320,7 +320,10 @@ if __name__ == '__main__':
         )
     f_test_pvals_series = pd.Series(
         f_test_pvals, index = cell_features_names)
-    f_test_pvals_series.to_csv(f"{folder_path}/MY-LC-Ftest-pvals.csv", header = None)
+    f_test_pvals_series.to_csv(
+        f"{folder_path}/MY-LC-Ftest-pvals.csv",
+        columns = ["Ftest-pval"]
+    )
 
 
     #######################################################
@@ -341,7 +344,7 @@ if __name__ == '__main__':
     huber_huber_robust_palmrt_intervals_df = pd.DataFrame(
         huber_huber_robust_palmrt_intervals,
         index = cell_features_names,
-        columns = ["LowerBound", "UpperBound", "EstimatedBeta", "EstimatedScale"]
+        columns = ["Huber-LowerBound", "Huber-UpperBound", "Huber-EstimatedBeta", "Huber-EstimatedScale"]
     )
     huber_huber_robust_palmrt_intervals_df.to_csv(f"{folder_path}/MY-LC-HuberHuberRobustPALMRT-intervals.csv")
 
@@ -363,7 +366,7 @@ if __name__ == '__main__':
     ols_l2_palmrt_intervals_df = pd.DataFrame(
         ols_l2_palmrt_intervals,
         index = cell_features_names,
-        columns = ["LowerBound", "UpperBound", "EstimatedBeta", "EstimatedScale"]
+        columns = ["OLS-LowerBound", "OLS-UpperBound", "OLS-EstimatedBeta", "OLS-EstimatedScale"]
     )
     ols_l2_palmrt_intervals_df.to_csv(f"{folder_path}/MY-LC-OLSL2PALMRT-intervals.csv")
 
@@ -384,7 +387,10 @@ if __name__ == '__main__':
         )
     scale_robust_palmrt_pvals_series = pd.Series(
         scale_robust_palmrt_pvals, index = cell_features_names)
-    scale_robust_palmrt_pvals_series.to_csv(f"{folder_path}/MY-LC-ScaleRobustPALMRT-pvals.csv", header = None)
+    scale_robust_palmrt_pvals_series.to_csv(
+        f"{folder_path}/MY-LC-ScaleRobustPALMRT-pvals.csv",
+        columns = ["Scale-pval"]
+    )
 
     print(f"Finished at {time.ctime()}")
 
