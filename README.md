@@ -15,45 +15,40 @@ To run the MY-LC analysis, you will need to download the [MY-LC dataset from Kle
 
 ## Running new simulations
 
-To run simulations similar to ours with new parameters, ...........
+To run simulations similar to ours with new parameters, see `./experiments/simple_experiment/` folder. The file `./experiments/simple_experiment/simple_experiment.py` is an easily modifiable version of our simulations, where one can replace a single function (`gen_data` on line 32) to test different settings for data generation. 
+
+Here is an example usage:
+```sh
+python simple_experiment.py --target-power 20 -B 999 --trials 1000 --seed 52224000 --monte-carlo-trials 10000 --f-test-tolerance 0.00001 --name abs-t3 --cpus 5
+```
 
 ## Reproducing our exact simulations
 
-We ran the simulations on a cluster with 40 CPUs @ 2.60GHz, using a Slurm system using the `sbatch` command. For reproducibility, we additionally provide commands to exactly rerun our simulations on such a system.
-
-To exactly run the sample size experiment, run the following commands:
-```sample_size_sims
-cd ./experiments/sample_size_experiment
-mkdir logs
-. SampleSizeMultiJobs.sh
-. SampleSizeMultiJobs-FollowUp.sh
-```
+We ran the simulations on a cluster with 40 CPUs @ 2.60GHz, using a Slurm system using the `sbatch` command. The total computation time was approximately 109 hours. For reproducibility, we additionally provide commands to exactly rerun our simulations on such a system.
 
 To exactly run the factorial experiment, run the following commands:
-```sample_size_sims
+```sh
 cd ./experiments/factorial_experiment
 mkdir logs
 . FactorialExperimentMultiJobs.sh
 ```
 
+To exactly run the sample size experiment, run the following commands:
+```sh
+cd ./experiments/sample_size_experiment
+mkdir logs
+. SampleSizeMultiJobs.sh
+```
+
+To reproduce the figures from the simulations, we provide two Jupyter Notebooks: create_main_paper_simulation_figure.ipynb and create_appendix_simulation_figures.ipynb
+
 ## Running the MY-LC analysis
 
+We ran the MY-LC real data analysis on a personal computer 5 CPUs @ 2.60GHz (using Windows). The total computation time was approximately 1 hour.
 
-
-
-## Results
-
-Our model achieves the following performance on :
-
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
-
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
-
-## Contributing
-
->📋  Pick a licence and describe how to contribute to your code repository. 
+To reproduce the computations and figures for the MY-LC analysis, use the following commands:
+```sh
+cd ./MY-LC/
+python MY-LC-Computations.py
+python MY-LC-Figures.py
+```
