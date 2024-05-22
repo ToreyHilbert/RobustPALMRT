@@ -40,15 +40,16 @@ mkdir logs
 . SampleSizeMultiJobs.sh
 ```
 
-To reproduce the figures from the simulations, we provide two Jupyter Notebooks: create_main_paper_simulation_figure.ipynb and create_appendix_simulation_figures.ipynb
+To reproduce the figures from the simulations, we provide two Jupyter Notebooks: `./experiments/create_main_paper_simulation_figure.ipynb` and `./experiments/create_appendix_simulation_figures.ipynb`.
 
 ## Running the MY-LC analysis
 
-We ran the MY-LC real data analysis on a personal computer 5 CPUs @ 2.60GHz (using Windows). The total computation time was approximately 1 hour.
+We ran the MY-LC real data analysis on a personal computer with 5 CPUs @ 2.60GHz (using Windows). The total computation time was approximately 1 hour.
 
-To reproduce the computations and figures for the MY-LC analysis, use the following commands:
+To reproduce the computations for the MY-LC analysis, use the following commands:
 ```sh
 cd ./MY-LC/
 python MY-LC-Computations.py
-python MY-LC-Figures.py
 ```
+
+To reproduce the figures for the MY-LC analysis, we provide a Jupyter Notebook: `./MY-LC/MY-LC-Figures.ipynb`.
