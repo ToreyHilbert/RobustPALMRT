@@ -319,10 +319,11 @@ if __name__ == '__main__':
             )
         )
     f_test_pvals_series = pd.Series(
-        f_test_pvals, index = cell_features_names)
+        f_test_pvals,
+        name = "Ftest-pval",
+        index = cell_features_names)
     f_test_pvals_series.to_csv(
-        f"{folder_path}/MY-LC-Ftest-pvals.csv",
-        columns = ["Ftest-pval"]
+        f"{folder_path}/MY-LC-Ftest-pvals.csv"
     )
 
 
@@ -386,10 +387,11 @@ if __name__ == '__main__':
             )
         )
     scale_robust_palmrt_pvals_series = pd.Series(
-        scale_robust_palmrt_pvals, index = cell_features_names)
+        scale_robust_palmrt_pvals,
+        name = "Scale-pval",
+        index = cell_features_names)
     scale_robust_palmrt_pvals_series.to_csv(
-        f"{folder_path}/MY-LC-ScaleRobustPALMRT-pvals.csv",
-        columns = ["Scale-pval"]
+        f"{folder_path}/MY-LC-ScaleRobustPALMRT-pvals.csv"
     )
 
     print(f"Finished at {time.ctime()}")

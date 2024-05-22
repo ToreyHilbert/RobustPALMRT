@@ -101,9 +101,7 @@ feature_names_dict["CSMemofB"] = "B cell(memory)"
 feature_names_dict["NaiveBofB"] = "B cell(naive)"
 feature_names_dict["DNofB"] = "B cell(double negative)"
 feature_names_dict["IL4IL6DPofCD8"] = "CD8+ T cell(IL4+IL6+)"
-
 feature_names_dict["IL4ofCD8"] = "CD8+ T cell (IL4+)"
-
 feature_names_dict["DC2ofLive"] = "cDC2"
 feature_names_dict["CD4IL6ofCD4"] = "CD4+ T cell(IL6+)"
 feature_names_dict["TotalMonoofLive"] = "Total monocytes"
@@ -254,7 +252,6 @@ def plot_confidence_interval(ax, index, lower, upper, point_estimate, color):
     ax.plot([index, index], [lower, upper], color)
     ax.plot([left, right], [upper, upper], color)
     ax.plot([left, right], [lower, lower], color)
-    # ax.plot(index, point_estimate, "x", markersize = 3, color = color)
 
 ax.set_xticks(range(len(feature_names_clean)), feature_names_clean, rotation = 15, ha = "right")
 ax.set_ylabel("Scaled Long-COVID Effect", fontsize = 14)
