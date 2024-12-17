@@ -40,6 +40,13 @@ mkdir logs
 . SampleSizeMultiJobs.sh
 ```
 
+To exactly run the dispersion experiment, run the following commands:
+```sh
+cd ./experiments/dispersion_experiment
+mkdir logs
+. DispersionExperimentMultiJobs.sh
+```
+
 To reproduce the figures from the simulations, we provide two Jupyter Notebooks: `./experiments/create_main_paper_simulation_figure.ipynb` and `./experiments/create_appendix_simulation_figures.ipynb`.
 
 ## Running the MY-LC analysis
